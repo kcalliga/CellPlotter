@@ -4,6 +4,8 @@
 # Keith Calligan
 # keith@drivetester.us
 
+CurrentDate=`date +%Y"."%m"."%d`;
+
 # Get List of LogFiles for each carrier and loop 
  
 
@@ -12,7 +14,7 @@
 count=0;
 total=0; 
 
-for i in  `cat /var/www/logfiles/Verizon_SIM2_2021.07.27*|grep -v Timestamp|awk -F '\t' '{print $3}'`;
+for i in  `cat /var/www/logfiles/Verizon*|grep $CurrentDate|grep -v Timestamp|awk -F '\t' '{print $3}'`;
    do 
      total=$(echo $total+$i | bc )
      ((count++))
@@ -25,7 +27,7 @@ echo $VerizonCenterLatitude;
 count=0;
 total=0; 
 
-for i in  `cat /var/www/logfiles/Verizon_SIM2_2021.07.27*|grep -v Timestamp|awk -F '\t' '{print $2}'`;
+for i in  `cat /var/www/logfiles/Verizon*|grep $CurrentDate|grep -v Timestamp|awk -F '\t' '{print $2}'`;
    do 
      total=$(echo $total+$i | bc )
      ((count++))
@@ -59,7 +61,7 @@ cat << EOF > /var/www/Verizon-RSRQ-daily-tmp.html
         tileSize: 512,
         zoomOffset: -1,
         minZoom: 1,
-        attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
+        Verizonribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
         crossOrigin: true
       }).addTo(map);
 
@@ -97,10 +99,10 @@ var redIcon = L.icon({
 EOF
 
 linecount=0;
-for timestamp in `cat /var/www/logfiles/Verizon_SIM2_2021.07.27*|grep -v Timestamp|awk -F '\t' '{print $1}'`; do
-RSRQ=`grep $timestamp /var/www/logfiles/Verizon_SIM2_2021.07.27*|awk -F '\t' '{print $15}'|head -1`;
-Latitude=`grep $timestamp /var/www/logfiles/Verizon_SIM2_2021.07.27*|awk -F '\t' '{print $3}'|head -1`;
-Longitude=`grep $timestamp /var/www/logfiles/Verizon_SIM2_2021.07.27*|awk -F '\t' '{print $2}'|head -1`;
+for timestamp in `cat /var/www/logfiles/Verizon*|grep $CurrentDate|grep -v Timestamp|awk -F '\t' '{print $1}'`; do
+RSRQ=`grep $timestamp /var/www/logfiles/Verizon*|grep $CurrentDate|awk -F '\t' '{print $15}'|head -1`;
+Latitude=`grep $timestamp /var/www/logfiles/Verizon*|grep $CurrentDate|awk -F '\t' '{print $3}'|head -1`;
+Longitude=`grep $timestamp /var/www/logfiles/Verizon*|grep $CurrentDate|awk -F '\t' '{print $2}'|head -1`;
 echo $Latitude;
 echo $Longitude;
 echo $linecount;
@@ -180,19 +182,17 @@ cat  << EOF >> /var/www/Verizon-RSRQ-daily-tmp.html
 
 EOF
 
-grep -v "{icon: }" /var/www/Verizon-RSRQ-daily-tmp.html > /var/www/Verizon-RSRQ-daily.html;
-
 # Set Center of Map based on average of all entries
 
 # Get List of all Latitudes for Verizon
 
+grep -v "{icon: }" /var/www/Verizon-RSRQ-daily-tmp.html > /var/www/Verizon-RSRQ-daily.html;
 
 
 
 
-
-#TMobileMapCenter=
-#ATTMapCenter=
+#VerizonMapCenter=
+#VerizonMapCenter=
 
 
 

@@ -6,7 +6,7 @@
 
 CurrentDate=`date +%Y"."%m`
 
-echo > /tmp/TMobile-RSRQ-average-tmp.txt;
+echo > /tmp/TMobile-RSRP-average-tmp.txt;
 
 # Get List of LogFiles for each carrier and loop 
  
@@ -40,7 +40,7 @@ echo $TMobileCenterLongitude;
 
 # Generate top of TMobile File;
 
-cat << EOF > /var/www/TMobile-RSRQ-average-tmp.html
+cat << EOF > /var/www/TMobile-RSRP-average-tmp.html
 
 <!DOCTYPE html>
 <html>
@@ -108,87 +108,305 @@ Latitude=`echo $i|awk -F "," '{print $1}'`;
 Longitude=`echo $i|awk -F "," '{print $2}'`;
 RoundedLatitude=`printf '%.*f\n' 3 $Latitude`;
 RoundedLongitude=`printf '%.*f\n' 3 $Longitude|sed 's/-//g'`;
-    for rsrq in `cat /var/www/logfiles/Google*|grep $CurrentDate|grep -E $RoundedLatitude |grep -E $RoundedLongitude|awk -F "\t" '{print $15}'|sort|uniq|sed 's/-//g'`; do
+    for rsrp in `cat /var/www/logfiles/Google*|grep $CurrentDate|grep -E $RoundedLatitude |grep -E $RoundedLongitude|awk -F "\t" '{print $14}'`; do
     #echo $RoundedLatitude;
     #echo $RoundedLongitude;
-     echo $rsrq;
+     echo $rsrp;
      echo $i;
-     total=$(echo $total+$rsrq | bc )
+     total=$(echo $total+$rsrp | bc )
      ((count++))
      done
-RSRQAverage=`echo "$total / $count" | bc`;
-echo $RSRQAverage;
+RSRPAverage=`echo "$total / $count" | bc`;
+echo $RSRPAverage;
 
 linecount=0;
 
-case "$RSRQAverage" in
-1)
+case "$RSRPAverage" in
+-30)
   Icon="greenIcon"
   ;;
-2)
+-31)
   Icon="greenIcon"
   ;;
-3)
+-32)
   Icon="greenIcon"
   ;;
-4)
+-33)
   Icon="greenIcon"
   ;;
-5)
+-34)
   Icon="greenIcon"
   ;;
-6)
+-35)
   Icon="greenIcon"
   ;;
-7)
+-36)
   Icon="greenIcon"
   ;;
-8)
+-37)
+  Icon="greenIcon"
+  ;;
+-38)
+  Icon="greenIcon"
+  ;;
+-39)
+  Icon="greenIcon"
+  ;;
+-40)
+  Icon="greenIcon"
+  ;;
+-41)
+  Icon="greenIcon"
+  ;;
+-42)
+  Icon="greenIcon"
+  ;;
+-43)
+  Icon="greenIcon"
+  ;;
+-44)
+  Icon="greenIcon"
+  ;;
+-45)
+  Icon="greenIcon"
+  ;;
+-46)
+  Icon="greenIcon"
+  ;;
+-47)
+  Icon="greenIcon"
+  ;;
+-48)
+  Icon="greenIcon"
+  ;;
+-49)
+  Icon="greenIcon"
+  ;;
+-50)
+  Icon="greenIcon"
+  ;;
+-51)
+  Icon="greenIcon"
+  ;;
+-52)
+  Icon="greenIcon"
+  ;;
+-53)
+  Icon="greenIcon"
+  ;;
+-54)
+  Icon="greenIcon"
+  ;;
+-55)
+  Icon="greenIcon"
+  ;;
+-56)
+  Icon="greenIcon"
+  ;;
+-57)
+  Icon="greenIcon"
+  ;;
+-58)
+  Icon="greenIcon"
+  ;;
+-59)
+  Icon="greenIcon"
+  ;;
+-60)
+  Icon="greenIcon"
+  ;;
+-60)
+  Icon="greenIcon"
+  ;;
+-61)
+  Icon="greenIcon"
+  ;;
+-62)
+  Icon="greenIcon"
+  ;;
+-63)
+  Icon="greenIcon"
+  ;;
+-64)
+  Icon="greenIcon"
+  ;;
+-65)
+  Icon="greenIcon"
+  ;;
+-66)
+  Icon="greenIcon"
+  ;;
+-67)
+  Icon="greenIcon"
+  ;;
+-68)
+  Icon="greenIcon"
+  ;;
+-69)
+  Icon="greenIcon"
+  ;;
+-70)
+  Icon="greenIcon"
+  ;;
+-71)
+  Icon="greenIcon"
+  ;;
+-72)
+  Icon="greenIcon"
+  ;;
+-73)
+  Icon="greenIcon"
+  ;;
+-74)
+  Icon="greenIcon"
+  ;;
+-75)
+  Icon="greenIcon"
+  ;;
+-76)
+  Icon="greenIcon"
+  ;;
+-77)
+  Icon="greenIcon"
+  ;;
+-78)
+  Icon="greenIcon"
+  ;;
+-79)
+  Icon="greenIcon"
+  ;;
+-80)
+  Icon="greenIcon"
+  ;;
+-81)
   Icon="yellowIcon"
   ;;
-9)
+-82)
   Icon="yellowIcon"
   ;;
-10)
+-83)
   Icon="yellowIcon"
   ;;
-11)
+-84)
   Icon="yellowIcon"
   ;;
-12)
+-85)
+  Icon="yellowIcon"
+  ;;
+-86)
+  Icon="yellowIcon"
+  ;;
+-87)
+  Icon="yellowIcon"
+  ;;
+-88)
+  Icon="yellowIcon"
+  ;;
+-89)
+  Icon="yellowIcon"
+  ;;
+-90)
+  Icon="yellowIcon"
+  ;;
+-91)
   Icon="orangeIcon"
   ;;
-13)
+-92)
   Icon="orangeIcon"
   ;;
-14)
+-93)
   Icon="orangeIcon"
   ;;
-15)
+-94)
+  Icon="orangeIcon"
+  ;;
+-95)
+  Icon="orangeIcon"
+  ;;
+-96)
+  Icon="orangeIcon"
+  ;;
+-97)
+  Icon="orangeIcon"
+  ;;
+-98)
+  Icon="orangeIcon"
+  ;;
+-99)
+  Icon="orangeIcon"
+  ;;
+-100)
+  Icon="orangeIcon"
+  ;;
+-101)
   Icon="redIcon"
   ;;
-16)
+-102)
   Icon="redIcon"
   ;;
-17)
+-103)
   Icon="redIcon"
   ;;
-18)
+-104)
   Icon="redIcon"
   ;;
-19)
+-105)
+  Icon="redIcon"
+  ;;
+-106)
+  Icon="redIcon"
+  ;;
+-107)
+  Icon="redIcon"
+  ;;
+-108)
+  Icon="redIcon"
+  ;;
+-109)
+  Icon="redIcon"
+  ;;
+-110)
+  Icon="redIcon"
+  ;;
+-111)
+  Icon="redIcon"
+  ;;
+-112)
+  Icon="redIcon"
+  ;;
+-113)
+  Icon="redIcon"
+  ;;
+-114)
+  Icon="redIcon"
+  ;;
+-115)
+  Icon="redIcon"
+  ;;
+-116)
+  Icon="redIcon"
+  ;;
+-117)
+  Icon="redIcon"
+  ;;
+-118)
+  Icon="redIcon"
+  ;;
+-119)
+  Icon="redIcon"
+  ;;
+-120)
   Icon="redIcon"
   ;;
 esac
 
-
-echo "L.marker([$RoundedLatitude, "-"$RoundedLongitude], {icon: $Icon}).addTo(map);" >> /tmp/TMobile-RSRQ-average-tmp.txt;
+echo "L.marker([$RoundedLatitude, "-"$RoundedLongitude], {icon: $Icon}).addTo(map);" >> /tmp/TMobile-RSRP-average-tmp.txt;
 
 done;
 
-cat /tmp/TMobile-RSRQ-average-tmp.txt|sort|uniq >> /var/www/TMobile-RSRQ-average-tmp.html;
+cat /tmp/TMobile-RSRP-average-tmp.txt|sort|uniq >> /var/www/TMobile-RSRP-average-tmp.html;
 
-cat  << EOF >> /var/www/TMobile-RSRQ-average-tmp.html
+cat  << EOF >> /var/www/TMobile-RSRP-average-tmp.html
     </script>
   </body>
 </html>
@@ -199,10 +417,7 @@ EOF
 
 # Get List of all Latitudes for TMobile
 
-mv /var/www/TMobile-RSRQ-average-tmp.html /var/www/TMobile-RSRQ-average.html
-
-
-
+grep -v "{icon: }" /var/www/TMobile-RSRP-average-tmp.html  >> /var/www/TMobile-RSRP-average.html
 
 #TMobileMapCenter=
 #ATTMapCenter=

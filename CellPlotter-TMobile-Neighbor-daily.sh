@@ -3,6 +3,10 @@
 # This is the script that will be used to gather logfile information and plot it on the map.  It will run as cronjob periodically.
 # Keith Calligan
 # keith@drivetester.us
+#
+#set -x;
+
+CurrentDate=`date +%Y"."%m"."%d`;
 
 # Get List of LogFiles for each carrier and loop 
  
@@ -12,7 +16,7 @@
 count=0;
 total=0; 
 
-for i in  `cat /var/www/logfiles/Google_Fi_2021.07.27*|grep -v Timestamp|awk -F '\t' '{print $3}'`;
+for i in  `cat /var/www/logfiles/Google*|grep $CurrentDate|grep -v Timestamp|awk -F '\t' '{print $3}'`;
    do 
      total=$(echo $total+$i | bc )
      ((count++))
@@ -25,7 +29,7 @@ echo $TMobileCenterLatitude;
 count=0;
 total=0; 
 
-for i in  `cat /var/www/logfiles/Google_Fi_2021.07.27*|grep -v Timestamp|awk -F '\t' '{print $2}'`;
+for i in  `cat /var/www/logfiles/Google*|grep $CurrentDate|grep -v Timestamp|awk -F '\t' '{print $2}'`;
    do 
      total=$(echo $total+$i | bc )
      ((count++))
@@ -59,7 +63,7 @@ cat << EOF > /var/www/TMobile-Neighbor-daily-tmp.html
         tileSize: 512,
         zoomOffset: -1,
         minZoom: 1,
-        attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
+        TMobileribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
         crossOrigin: true
       }).addTo(map);
 
@@ -97,10 +101,10 @@ var redIcon = L.icon({
 EOF
 
 linecount=0;
-for timestamp in `cat /var/www/logfiles/Google_Fi_2021.07.27*|grep -v Timestamp|awk -F '\t' '{print $1}'`; do
-NeighborCount=`grep $timestamp /var/www/logfiles/Google_Fi_2021.07.27*|head -1|awk -F "\t" '{print $89"\n"$99"\n"$109"\n"$119"\n"$129"\n"$139"\n"$149"\n"$159"\n"$169"\n"$179"\n"$189"\n"$199"\n"$209"\n"$219"\n"$229"\n"$239"\n"$249}'|grep -e 1 -e 2 -e 3 -e 4 -e 5 -e 6 -e 7 -e 8 -e 9 |wc -l`;
-Latitude=`grep $timestamp /var/www/logfiles/Google_Fi_2021.07.27*|awk -F '\t' '{print $3}'|head -1`;
-Longitude=`grep $timestamp /var/www/logfiles/Google_Fi_2021.07.27*|awk -F '\t' '{print $2}'|head -1`;
+for timestamp in `cat /var/www/logfiles/Google*|grep $CurrentDate|grep -v Timestamp|awk -F '\t' '{print $1}'`; do
+NeighborCount=`grep $timestamp /var/www/logfiles/Google*|grep $CurrentDate|head -1|awk -F "\t" '{print $89"\n"$99"\n"$109"\n"$119"\n"$129"\n"$139"\n"$149"\n"$159"\n"$169"\n"$179"\n"$189"\n"$199"\n"$209"\n"$219"\n"$229"\n"$239"\n"$249}'|grep -e 1 -e 2 -e 3 -e 4 -e 5 -e 6 -e 7 -e 8 -e 9 |wc -l`;
+Latitude=`grep $timestamp /var/www/logfiles/Google*|grep $CurrentDate|awk -F '\t' '{print $3}'|head -1`;
+Longitude=`grep $timestamp /var/www/logfiles/Google*|grep $CurrentDate*|awk -F '\t' '{print $2}'|head -1`;
 echo $Latitude;
 echo $Longitude;
 echo $linecount;
@@ -166,7 +170,6 @@ case "$NeighborCount" in
   ;;
 esac
 
-
 cat << EOF >> /var/www/TMobile-Neighbor-daily-tmp.html
 L.marker([$Latitude, $Longitude], {icon: $Icon}).addTo(map);
 EOF
@@ -190,7 +193,7 @@ grep -v "{icon: }" /var/www/TMobile-Neighbor-daily-tmp.html > /var/www/TMobile-N
 
 
 #TMobileMapCenter=
-#ATTMapCenter=
+#TMobileMapCenter=
 
 
 

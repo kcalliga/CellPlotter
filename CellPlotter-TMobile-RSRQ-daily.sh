@@ -4,6 +4,8 @@
 # Keith Calligan
 # keith@drivetester.us
 
+CurrentDate=`date +%Y"."%m"."%d`;
+
 # Get List of LogFiles for each carrier and loop 
  
 
@@ -12,7 +14,7 @@
 count=0;
 total=0; 
 
-for i in  `cat /var/www/logfiles/Google_Fi_2021.07.27*|grep -v Timestamp|awk -F '\t' '{print $3}'`;
+for i in  `cat /var/www/logfiles/Google*|grep $CurrentDate|grep -v Timestamp|awk -F '\t' '{print $3}'`;
    do 
      total=$(echo $total+$i | bc )
      ((count++))
@@ -25,7 +27,7 @@ echo $TMobileCenterLatitude;
 count=0;
 total=0; 
 
-for i in  `cat /var/www/logfiles/Google_Fi_2021.07.27*|grep -v Timestamp|awk -F '\t' '{print $2}'`;
+for i in  `cat /var/www/logfiles/Google*|grep $CurrentDate|grep -v Timestamp|awk -F '\t' '{print $2}'`;
    do 
      total=$(echo $total+$i | bc )
      ((count++))
@@ -52,13 +54,14 @@ cat << EOF > /var/www/TMobile-RSRQ-daily-tmp.html
       <a href="https://www.maptiler.com" style="position:absolute;left:10px;bottom:10px;z-index:999;"><img src="https://api.maptiler.com/resources/logo.svg" alt="MapTiler logo"></a>
     </div>
     <p><a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a></p>
+    <script src="TMobileTest.js" type="text/javascript"></script>
     <script>
       var map = L.map('map').setView([$TMobileCenterLatitude, $TMobileCenterLongitude], 13);
       L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=S3P9GzyoztmyHTfFGU2a',{
         tileSize: 512,
         zoomOffset: -1,
         minZoom: 1,
-        attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
+        TMobileribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
         crossOrigin: true
       }).addTo(map);
 
@@ -96,10 +99,10 @@ var redIcon = L.icon({
 EOF
 
 linecount=0;
-for timestamp in `cat /var/www/logfiles/Google_Fi_2021.07.27*|grep -v Timestamp|awk -F '\t' '{print $1}'`; do
-RSRQ=`grep $timestamp /var/www/logfiles/Google_Fi_2021.07.27*|awk -F '\t' '{print $15}'|head -1`;
-Latitude=`grep $timestamp /var/www/logfiles/Google_Fi_2021.07.27*|awk -F '\t' '{print $3}'|head -1`;
-Longitude=`grep $timestamp /var/www/logfiles/Google_Fi_2021.07.27*|awk -F '\t' '{print $2}'|head -1`;
+for timestamp in `cat /var/www/logfiles/Google*|grep $CurrentDate|grep -v Timestamp|awk -F '\t' '{print $1}'`; do
+RSRQ=`grep $timestamp /var/www/logfiles/Google*|grep $CurrentDate|awk -F '\t' '{print $15}'|head -1`;
+Latitude=`grep $timestamp /var/www/logfiles/Google*|grep $CurrentDate|awk -F '\t' '{print $3}'|head -1`;
+Longitude=`grep $timestamp /var/www/logfiles/Google*|grep $CurrentDate|awk -F '\t' '{print $2}'|head -1`;
 echo $Latitude;
 echo $Longitude;
 echo $linecount;
@@ -189,7 +192,7 @@ grep -v "{icon: }" /var/www/TMobile-RSRQ-daily-tmp.html > /var/www/TMobile-RSRQ-
 
 
 #TMobileMapCenter=
-#ATTMapCenter=
+#TMobileMapCenter=
 
 
 

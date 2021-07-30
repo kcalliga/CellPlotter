@@ -394,7 +394,7 @@ done;
 cat  << EOF >> /var/www/TMobile-RSRP.html
     </script>
   </body>
-</html
+</html>
 
 EOF
 

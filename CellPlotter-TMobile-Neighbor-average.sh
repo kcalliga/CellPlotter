@@ -4,6 +4,8 @@
 # Keith Calligan
 # keith@drivetester.us
 
+CurrentDate=`date +%Y"."%m`
+
 echo > /tmp/TMobile-Neighbor-average-tmp.txt;
 
 # Get List of LogFiles for each carrier and loop 
@@ -15,7 +17,7 @@ echo > /tmp/TMobile-Neighbor-average-tmp.txt;
 count=0;
 total=0; 
 
-for i in  `cat /var/www/logfiles/Google*|grep -v Timestamp|awk -F '\t' '{print $3}'`;
+for i in  `cat /var/www/logfiles/Google*|grep $CurrentDate|grep -v Timestamp|awk -F '\t' '{print $3}'`;
    do 
      total=$(echo $total+$i | bc )
      ((count++))
@@ -28,7 +30,7 @@ echo $TMobileCenterLatitude;
 count=0;
 total=0; 
 
-for i in  `cat /var/www/logfiles/Google*|grep -v Timestamp|awk -F '\t' '{print $2}'`;
+for i in  `cat /var/www/logfiles/Google*|grep $CurrentDate|grep -v Timestamp|awk -F '\t' '{print $2}'`;
    do 
      total=$(echo $total+$i | bc )
      ((count++))
@@ -99,7 +101,7 @@ var redIcon = L.icon({
 EOF
 
 
-for i in `cat /var/www/logfiles/Google*|grep -v -e Calligan -e Longitude| awk -F "\t" '{print $3","$2}'`; do
+for i in `cat /var/www/logfiles/Google*|grep $CurrentDate|grep -v -e Calligan -e Longitude| awk -F "\t" '{print $3","$2}'`; do
 echo $i;
     count=0
     total=0
@@ -109,7 +111,7 @@ RoundedLatitude=`printf '%.*f\n' 3 $Latitude`;
 RoundedLongitude=`printf '%.*f\n' 3 $Longitude|sed 's/-//g'`;
 
 
-for Neighbor in `cat /var/www/logfiles/Google*|grep -E $RoundedLatitude| grep -E $RoundedLongitude|awk -F "\t" '{print $89","$99","$109","$119","$129","$139","$149","$159","$169","$179","$189","$199","$209","$219","$229","$239","$249}'`; do
+for Neighbor in `cat /var/www/logfiles/Google*|grep $CurrentDate|grep -E $RoundedLatitude| grep -E $RoundedLongitude|awk -F "\t" '{print $89","$99","$109","$119","$129","$139","$149","$159","$169","$179","$189","$199","$209","$219","$229","$239","$249}'`; do
 
 
 #    for Neighbor in `cat /var/www/logfiles/Verizon*|grep -E $RoundedLatitude |grep -E $RoundedLongitude|awk -F "\t" '{print $15}'|sort|uniq|sed 's/-//g'`; do

@@ -4,6 +4,8 @@
 # Keith Calligan
 # keith@drivetester.us
 
+CurrentDate=`date +%Y"."%m`
+
 echo > /tmp/ATT-RSSI-average-tmp.txt;
 
 # Get List of LogFiles for each carrier and loop 
@@ -15,7 +17,7 @@ echo > /tmp/ATT-RSSI-average-tmp.txt;
 count=0;
 total=0; 
 
-for i in  `cat /var/www/logfiles/ATT*|grep -v Timestamp|awk -F '\t' '{print $3}'`;
+for i in  `cat /var/www/logfiles/ATT*|grep $CurrentDate|grep -v Timestamp|awk -F '\t' '{print $3}'`;
    do 
      total=$(echo $total+$i | bc )
      ((count++))
@@ -28,7 +30,7 @@ echo $ATTCenterLatitude;
 count=0;
 total=0; 
 
-for i in  `cat /var/www/logfiles/ATT*|grep -v Timestamp|awk -F '\t' '{print $2}'`;
+for i in  `cat /var/www/logfiles/ATT*|grep $CurrentDate|grep -v Timestamp|awk -F '\t' '{print $2}'`;
    do 
      total=$(echo $total+$i | bc )
      ((count++))
@@ -98,7 +100,7 @@ var redIcon = L.icon({
 
 EOF
 
-for i in `cat /var/www/logfiles/ATT*|grep -v -e Calligan -e Longitude| awk -F "\t" '{print $3","$2}'`; do
+for i in `cat /var/www/logfiles/ATT*|grep $CurrentDate|grep -v -e Calligan -e Longitude| awk -F "\t" '{print $3","$2}'`; do
 echo $i;
     count=0
     total=0
@@ -106,7 +108,7 @@ Latitude=`echo $i|awk -F "," '{print $1}'`;
 Longitude=`echo $i|awk -F "," '{print $2}'`;
 RoundedLatitude=`printf '%.*f\n' 3 $Latitude`;
 RoundedLongitude=`printf '%.*f\n' 3 $Longitude|sed 's/-//g'`;
-    for rssi in `cat /var/www/logfiles/ATT*|grep -E $RoundedLatitude |grep -E $RoundedLongitude|awk -F "\t" '{print $18}'`; do
+    for rssi in `cat /var/www/logfiles/ATT*|grep $CurrentDate|grep -E $RoundedLatitude |grep -E $RoundedLongitude|awk -F "\t" '{print $18}'`; do
     #echo $RoundedLatitude;
     #echo $RoundedLongitude;
      echo $rssi;
@@ -416,8 +418,7 @@ EOF
 
 # Get List of all Latitudes for ATT
 
-mv /var/www/ATT-RSSI-average-tmp.html /var/www/ATT-RSSI-average.html
-
+grep -v "{icon: }" /var/www/ATT-RSSI-average-tmp.html  >> /var/www/ATT-RSSI-average.html
 
 
 
